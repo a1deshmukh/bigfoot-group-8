@@ -1,5 +1,10 @@
 (function () {
   (function ($) {
+    // Constants
+    const POPOVER_MARGIN = 15;
+    const MAX_HEIGHT_DEFAULT = 10000;
+    const ADDITIONAL_WIDTH = 1;
+
     return ($.bigfoot = function (options) {
       var addBreakpoint,
         baseFontSize,
@@ -340,10 +345,11 @@
         if ($nearButton.length > 0) {
           event.preventDefault();
           clickButton($nearButton);
-        } else if ($nearFootnote.length < 1) {
-          if ($(".bigfoot-footnote").length > 0) {
-            removePopovers();
-          }
+        } else if (
+          $nearFootnote.length < 1 &&
+          $(".bigfoot-footnote").length > 0
+        ) {
+          removePopovers();
         }
       };
       clickButton = function ($button) {
@@ -424,7 +430,7 @@
               "bigfoot-max-width",
               calculatePixelDimension($content.css("max-width"), $content)
             );
-            $content.css("max-width", 10000);
+            $content.css("max-width", MAX_HEIGHT_DEFAULT);
             $contentContainer = $content.find(".bigfoot-footnote__content");
             $content.attr(
               "data-bigfoot-max-height",
@@ -457,7 +463,7 @@
       };
       calculatePixelDimension = function (dim, $el) {
         if (dim === "none") {
-          dim = 10000;
+          dim = MAX_HEIGHT_DEFAULT;
         } else if (dim.indexOf("rem") >= 0) {
           dim = parseFloat(dim) * baseFontSize();
         } else if (dim.indexOf("em") >= 0) {
@@ -609,36 +615,32 @@
             marginSize = parseFloat($this.css("margin-top"));
             maxHeightInCSS = +$this.attr("data-bigfoot-max-height");
             totalHeight = 2 * marginSize + $this.outerHeight();
-            maxHeightOnScreen = 10000;
+            maxHeightOnScreen = MAX_HEIGHT_DEFAULT;
             positionOnTop =
               roomLeft.bottomRoom < totalHeight &&
               roomLeft.topRoom > roomLeft.bottomRoom;
             lastState = popoverStates[identifier];
-            if (positionOnTop) {
-              if (lastState !== "top") {
-                popoverStates[identifier] = "top";
-                $this
-                  .addClass("is-positioned-top")
-                  .removeClass("is-positioned-bottom");
-                $this.css(
-                  "transform-origin",
-                  roomLeft.leftRelative * 100 + "% 100%"
-                );
-              }
-              maxHeightOnScreen = roomLeft.topRoom - marginSize - 15;
-            } else {
-              if (lastState !== "bottom" || lastState === "init") {
-                popoverStates[identifier] = "bottom";
-                $this
-                  .removeClass("is-positioned-top")
-                  .addClass("is-positioned-bottom");
-                $this.css(
-                  "transform-origin",
-                  roomLeft.leftRelative * 100 + "% 0%"
-                );
-              }
-              maxHeightOnScreen = roomLeft.bottomRoom - marginSize - 15;
+            if (positionOnTop && lastState !== "top") {
+              popoverStates[identifier] = "top";
+              $this
+                .addClass("is-positioned-top")
+                .removeClass("is-positioned-bottom");
+              $this.css(
+                "transform-origin",
+                roomLeft.leftRelative * 100 + "% 100%"
+              );
+            } else if (lastState !== "bottom" || lastState === "init") {
+              popoverStates[identifier] = "bottom";
+              $this
+                .removeClass("is-positioned-top")
+                .addClass("is-positioned-bottom");
+              $this.css(
+                "transform-origin",
+                roomLeft.leftRelative * 100 + "% 0%"
+              );
             }
+            maxHeightOnScreen =
+              roomLeft.bottomRoom - marginSize - POPOVER_MARGIN;
             $this.find(".bigfoot-footnote__content").css({
               "max-height": Math.min(maxHeightOnScreen, maxHeightInCSS) + "px",
             });
@@ -649,7 +651,7 @@
               if (maxWidthInCSS <= 1) {
                 relativeToWidth = (function () {
                   var jq, userSpecifiedRelativeElWidth;
-                  userSpecifiedRelativeElWidth = 10000;
+                  userSpecifiedRelativeElWidth = MAX_HEIGHT_DEFAULT;
                   if (settings.maxWidthRelativeTo) {
                     jq = $(settings.maxWidthRelativeTo);
                     if (jq.length > 0) {
@@ -813,7 +815,7 @@
           var $closedPopovers;
           $closedPopovers = void 0;
           if (removeOpen) {
-            $closedPopovers = bigfoot.close();
+            $closedPopovers = bigfoot.removePopovers();
             bigfoot.updateSetting("activateCallback", callback);
           }
           return setTimeout(function () {
@@ -890,7 +892,6 @@
       });
       bigfoot = {
         removePopovers: removePopovers,
-        close: removePopovers,
         createPopover: createPopover,
         activate: createPopover,
         repositionFeet: repositionFeet,
