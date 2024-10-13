@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bigfoot.js Interactive Example</title>
+    
+    <!-- jQuery and Bigfoot.js scripts -->
+    <script src="jquery-3.7.1.min.js"></script>
+    <script src="dist/bigfoot.min.js"></script>
+    
+    <!-- Bigfoot.js stylesheets -->
+    <link rel="stylesheet" href="dist/bigfoot-bottom.css" id="footnote-bottom-style" disabled>
+    <link rel="stylesheet" href="dist/bigfoot-default.css" id="footnote-default-style" disabled>
+    <link rel="stylesheet" href="dist/bigfoot-number.css" id="footnote-number-style" disabled>
+    
+    <!-- Custom CSS file -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <script>
+        // Initialize Bigfoot.js
+        var bigfoot = $.bigfoot();
+
+        // Function to activate a specific footnote style
+        function activateFootnoteStyle(styleToActivate) {
+            // Disable all stylesheets initially
+            document.getElementById('footnote-bottom-style').disabled = true;
+            document.getElementById('footnote-default-style').disabled = true;
+            document.getElementById('footnote-number-style').disabled = true;
+
+            // Enable the selected stylesheet
+            document.getElementById(styleToActivate).disabled = false;
+        }
+
+        // Activate the 'bottom' style by default
+        window.onload = function() {
+            activateFootnoteStyle('footnote-bottom-style');
+        };
+    </script>
+</head>
+<body>
+    <!-- Buttons to switch styles -->
+    <div>
+        <button onclick="activateFootnoteStyle('footnote-bottom-style')">Bottom Style</button>
+        <button onclick="activateFootnoteStyle('footnote-default-style')">Default Style</button>
+        <button onclick="activateFootnoteStyle('footnote-number-style')">Number Style</button>
+    </div>
+
+    <!-- Bottom style footnotes -->
+    <div class="footnotes footnotes-bottom">
+        <ol>
+            <li class="footnote" id="fn:1">
+                <p>Footnote 1: JavaScript was created in just 10 days by Brendan Eich while working at Netscape.</p>
+            </li>
+        </ol>
+    </div>
+    
+    <!-- Default style footnotes -->
+    <div class="footnotes footnotes-default">
+        <ol>
+            <li class="footnote" id="fn:2">
+                <p>Footnote 2: Interactive footnotes are great for providing additional info without cluttering the main content.</p>
+            </li>
+        </ol>
+    </div>
+    
+    <!-- Number style footnotes -->
+    <div class="footnotes footnotes-number">
+        <ol>
+            <li class="footnote" id="fn:3">
+                <p>Footnote 3: Bigfoot.js is easy to implement and allows footnotes to be displayed inline or in modals.</p>
+            </li>
+        </ol>
+    </div>
+
+    <h1>Welcome to the World of Bigfoot.js</h1>
+    <p>This article demonstrates the use of <strong>Bigfoot.js</strong> to enhance user experience with interactive footnotes.</p>
+    <p>Did you know that JavaScript was created in just 10 days by Brendan Eich while working at Netscape? <a href="#fn:1" rel="footnote">[1]</a></p>
+    <p>Interactive footnotes are great for providing additional info without cluttering the main content. <a href="#fn:2" rel="footnote">[2]</a></p>
+    <p>Another cool fact: Bigfoot.js allows for highly customizable footnote styles and can fit various design patterns. <a href="#fn:3" rel="footnote">[3]</a></p>
+</body>
+</html>

@@ -1,0 +1,67 @@
+/* Reset some basic elements */
+body, h1, p {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Page header styling */
+h1 {
+    text-align: center;
+    margin: 30px 0;
+    font-size: 2.5rem;
+    color: #2c3e50;
+}
+
+/* Paragraph styling */
+p {
+    line-height: 1.6;
+    font-size: 1.2rem;
+    margin: 20px 15px;
+}
+
+/* Footnotes styling */
+.footnotes {
+    background-color: #f1f1f1;
+    border-top: 2px solid #ccc;
+    padding: 10px 20px;
+}
+
+.footnote {
+    margin-bottom: 15px;
+}
+
+.footnote p {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Links (footnote references) */
+a[rel="footnote"] {
+    color: #2980b9;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a[rel="footnote"]:hover {
+    text-decoration: underline;
+}
+
+/* Add some responsive design */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+}
