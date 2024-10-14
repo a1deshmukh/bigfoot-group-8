@@ -7,7 +7,7 @@
 
     <!-- jQuery and Bigfoot.js scripts -->
     <script src="jquery-3.7.1.min.js"></script>
-    <script src="dist/bigfoot.min.js"></script>
+    <script src="dist/bigfoot.js"></script>
 
     <!-- Bigfoot.js stylesheets -->
     <link
@@ -55,14 +55,23 @@
   </head>
   <body>
     <!-- Buttons to switch styles -->
-    <div>
-      <button onclick="activateFootnoteStyle('footnote-bottom-style')">
+    <div class="button-container">
+      <button
+        class="style-switcher"
+        onclick="activateFootnoteStyle('footnote-bottom-style')"
+      >
         Bottom Style
       </button>
-      <button onclick="activateFootnoteStyle('footnote-default-style')">
+      <button
+        class="style-switcher"
+        onclick="activateFootnoteStyle('footnote-default-style')"
+      >
         Default Style
       </button>
-      <button onclick="activateFootnoteStyle('footnote-number-style')">
+      <button
+        class="style-switcher"
+        onclick="activateFootnoteStyle('footnote-number-style')"
+      >
         Number Style
       </button>
     </div>

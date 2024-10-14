@@ -583,120 +583,109 @@
         });
         return $buttonsClosed;
       };
-      const repositionFeet = function (e) {
-        if (!settings.positionContent) return;
-
-        const type = e ? e.type : "resize";
-        $(".bigfoot-footnote").each(function () {
-          const $this = $(this);
-          const identifier = $this.attr("data-footnote-identifier");
-          const $contentWrapper = $this.find(".bigfoot-footnote__content");
-          const $button = $this.siblings(".bigfoot-footnote__button");
-          const marginSize = parseFloat($this.css("margin-top"));
-          const totalHeight = 2 * marginSize + $this.outerHeight();
-          const maxHeightInCSS =
-            +$this.attr("data-bigfoot-max-height") || MAX_HEIGHT_DEFAULT;
-
-          // Calculate room available around the button
-          const roomLeft = roomCalc($button);
-          let positionOnTop = shouldPositionOnTop(roomLeft, totalHeight);
-
-          updatePopoverState($this, identifier, positionOnTop, roomLeft);
-
-          const maxHeightOnScreen =
-            roomLeft.bottomRoom - marginSize - POPOVER_MARGIN;
-          $contentWrapper.css({
-            "max-height": Math.min(maxHeightOnScreen, maxHeightInCSS) + "px",
+      repositionFeet = function (e) {
+        var type;
+        if (settings.positionContent) {
+          type = e ? e.type : "resize";
+          $(".bigfoot-footnote").each(function () {
+            var $button,
+              $contentWrapper,
+              $mainWrap,
+              $this,
+              dataIdentifier,
+              identifier,
+              lastState,
+              marginSize,
+              maxHeightInCSS,
+              maxHeightOnScreen,
+              maxWidth,
+              maxWidthInCSS,
+              positionOnTop,
+              relativeToWidth,
+              roomLeft,
+              totalHeight;
+            $this = $(this);
+            identifier = $this.attr("data-footnote-identifier");
+            dataIdentifier = "data-footnote-identifier='" + identifier + "'";
+            $contentWrapper = $this.find(".bigfoot-footnote__content");
+            $button = $this.siblings(".bigfoot-footnote__button");
+            roomLeft = roomCalc($button);
+            marginSize = parseFloat($this.css("margin-top"));
+            maxHeightInCSS = +$this.attr("data-bigfoot-max-height");
+            totalHeight = 2 * marginSize + $this.outerHeight();
+            maxHeightOnScreen = MAX_HEIGHT_DEFAULT;
+            positionOnTop =
+              roomLeft.bottomRoom < totalHeight &&
+              roomLeft.topRoom > roomLeft.bottomRoom;
+            lastState = popoverStates[identifier];
+            if (positionOnTop && lastState !== "top") {
+              popoverStates[identifier] = "top";
+              $this
+                .addClass("is-positioned-top")
+                .removeClass("is-positioned-bottom");
+              $this.css(
+                "transform-origin",
+                roomLeft.leftRelative * 100 + "% 100%"
+              );
+            } else if (lastState !== "bottom" || lastState === "init") {
+              popoverStates[identifier] = "bottom";
+              $this
+                .removeClass("is-positioned-top")
+                .addClass("is-positioned-bottom");
+              $this.css(
+                "transform-origin",
+                roomLeft.leftRelative * 100 + "% 0%"
+              );
+            }
+            maxHeightOnScreen =
+              roomLeft.bottomRoom - marginSize - POPOVER_MARGIN;
+            $this.find(".bigfoot-footnote__content").css({
+              "max-height": Math.min(maxHeightOnScreen, maxHeightInCSS) + "px",
+            });
+            if (type === "resize") {
+              maxWidthInCSS = parseFloat($this.attr("bigfoot-max-width"));
+              $mainWrap = $this.find(".bigfoot-footnote__wrapper");
+              maxWidth = maxWidthInCSS;
+              if (maxWidthInCSS <= 1) {
+                relativeToWidth = (function () {
+                  var jq, userSpecifiedRelativeElWidth;
+                  userSpecifiedRelativeElWidth = MAX_HEIGHT_DEFAULT;
+                  if (settings.maxWidthRelativeTo) {
+                    jq = $(settings.maxWidthRelativeTo);
+                    if (jq.length > 0) {
+                      userSpecifiedRelativeElWidth = jq.outerWidth();
+                    }
+                  }
+                  return Math.min(
+                    window.innerWidth,
+                    userSpecifiedRelativeElWidth
+                  );
+                })();
+                maxWidth = relativeToWidth * maxWidthInCSS;
+              }
+              maxWidth = Math.min(
+                maxWidth,
+                $this.find(".bigfoot-footnote__content").outerWidth() + 1
+              );
+              $mainWrap.css("max-width", maxWidth + "px");
+              /*$this.css({
+                left:
+                  -roomLeft.leftRelative * maxWidth +
+                  parseFloat($button.css("margin-left")) +
+                  $button.outerWidth() / 2 +
+                  "px",
+              });*/
+              positionTooltip($this, roomLeft.leftRelative);
+            }
+            if (
+              parseInt($this.outerHeight()) <
+              $this.find(".bigfoot-footnote__content")[0].scrollHeight
+            ) {
+              return $this.addClass("is-scrollable");
+            }
           });
-
-          if (type === "resize") {
-            updateWidthAndPosition($this, $button, roomLeft);
-          }
-
-          // Add 'is-scrollable' class if the content overflows
-          if ($contentWrapper[0].scrollHeight > parseInt($this.outerHeight())) {
-            $this.addClass("is-scrollable");
-          }
-        });
-      };
-
-      // Helper function to check whether to position the footnote on top
-      const shouldPositionOnTop = (roomLeft, totalHeight) => {
-        return (
-          roomLeft.bottomRoom < totalHeight &&
-          roomLeft.topRoom > roomLeft.bottomRoom
-        );
-      };
-
-      // Helper function to update the popover state
-      const updatePopoverState = (
-        $footnote,
-        identifier,
-        positionOnTop,
-        roomLeft
-      ) => {
-        const lastState = popoverStates[identifier];
-        if (positionOnTop && lastState !== "top") {
-          popoverStates[identifier] = "top";
-          $footnote
-            .addClass("is-positioned-top")
-            .removeClass("is-positioned-bottom");
-          $footnote.css(
-            "transform-origin",
-            `${roomLeft.leftRelative * 100}% 100%`
-          );
-        } else if (!positionOnTop && lastState !== "bottom") {
-          popoverStates[identifier] = "bottom";
-          $footnote
-            .removeClass("is-positioned-top")
-            .addClass("is-positioned-bottom");
-          $footnote.css(
-            "transform-origin",
-            `${roomLeft.leftRelative * 100}% 0%`
-          );
         }
       };
-
-      // Helper function to update the width and position of the footnote
-      const updateWidthAndPosition = ($footnote, $button, roomLeft) => {
-        const maxWidthInCSS =
-          parseFloat($footnote.attr("bigfoot-max-width")) || 1;
-        let maxWidth = calculateMaxWidth($footnote, maxWidthInCSS);
-        const $mainWrap = $footnote.find(".bigfoot-footnote__wrapper");
-
-        maxWidth = Math.min(
-          maxWidth,
-          $footnote.find(".bigfoot-footnote__content").outerWidth() + 1
-        );
-        $mainWrap.css("max-width", `${maxWidth}px`);
-
-        const leftPosition = calculateLeftPosition($button, roomLeft, maxWidth);
-        $footnote.css({ left: `${leftPosition}px` });
-
-        positionTooltip($footnote, roomLeft.leftRelative);
-      };
-
-      // Helper function to calculate max width based on CSS and window size
-      const calculateMaxWidth = ($footnote, maxWidthInCSS) => {
-        if (maxWidthInCSS > 1) return maxWidthInCSS;
-
-        let relativeToWidth = MAX_HEIGHT_DEFAULT;
-        if (settings.maxWidthRelativeTo) {
-          const $relativeElement = $(settings.maxWidthRelativeTo);
-          if ($relativeElement.length > 0) {
-            relativeToWidth = $relativeElement.outerWidth();
-          }
-        }
-        return Math.min(window.innerWidth, relativeToWidth) * maxWidthInCSS;
-      };
-
-      // Helper function to calculate the left position of the footnote
-      const calculateLeftPosition = ($button, roomLeft, maxWidth) => {
-        const marginLeft = parseFloat($button.css("margin-left"));
-        const buttonWidth = $button.outerWidth() / 2;
-        return -roomLeft.leftRelative * maxWidth + marginLeft + buttonWidth;
-      };
-
       positionTooltip = function ($popover, leftRelative) {
         var $tooltip;
         if (leftRelative == null) {
