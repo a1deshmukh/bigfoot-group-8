@@ -33,6 +33,10 @@
         updateSetting,
         viewportDetails;
       bigfoot = void 0;
+      let userInteracted = false;
+      // click or touchstart event to flag user interaction
+      document.addEventListener('click', () => { userInteracted = true; });
+      document.addEventListener('touchstart', () => { userInteracted = true; });
       defaults = {
         actionOriginalFN: "hide",
         activateCallback: function () {},
@@ -146,6 +150,15 @@
       };
 
       // Helper Functions
+      // Function to play sound
+      function playSound(soundFile) {
+        if (userInteracted) {
+            var audio = new Audio(soundFile);
+            audio.play().catch(error => {
+                console.error("Error playing sound:", error);
+            });
+        }
+      }
       const sanitizeFootnoteContent = (content, backlinkRef) => {
         content = removeBackLinks(content, backlinkRef);
         return content
@@ -316,6 +329,8 @@
       };
       buttonHover = function (event) {
         var $buttonHovered, dataIdentifier, otherPopoverSelector;
+        // play hover sound
+        playSound('sounds/hover.mp3');
         if (settings.activateOnHover) {
           $buttonHovered = $(event.target).closest(".bigfoot-footnote__button");
           dataIdentifier =
@@ -354,6 +369,8 @@
       clickButton = function ($button) {
         var dataIdentifier;
         $button.blur();
+        // play click sound
+        playSound('sounds/click.mp3');
         dataIdentifier =
           "data-footnote-identifier='" +
           $button.attr("data-footnote-identifier") +
