@@ -56,6 +56,7 @@ For code used in this demo, please refer to the animation branch.
 <video width="320" height="240" controls>
   <source src="demo/sound-demo.mp4" type="video/mp4">
 </video>\
+
 # Demo of Bigfoot Different Footnote Types 
 <video width="320" height="240" controls>
   <source src="demo/bigfoot-footnote-types.mp4" type="video/mp4">
