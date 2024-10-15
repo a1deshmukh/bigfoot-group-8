@@ -60,6 +60,9 @@
           "<aside class='bigfoot-footnote is-positioned-bottom' data-footnote-number='{{FOOTNOTENUM}}' data-footnote-identifier='{{FOOTNOTEID}}' alt='Footnote {{FOOTNOTENUM}}'> <div class='bigfoot-footnote__wrapper'> <div class='bigfoot-footnote__content'> {{FOOTNOTECONTENT}} </div></div> <div class='bigfoot-footnote__tooltip'></div> </aside>",
         buttonMarkup:
           "<div class='bigfoot-footnote__container'> <button class='bigfoot-footnote__button' id='{{SUP:data-footnote-backlink-ref}}' data-footnote-number='{{FOOTNOTENUM}}' data-footnote-identifier='{{FOOTNOTEID}}' alt='See Footnote {{FOOTNOTENUM}}' rel='footnote' data-bigfoot-footnote='{{FOOTNOTECONTENT}}'> <svg class='bigfoot-footnote__button__circle' viewbox='0 0 6 6' preserveAspectRatio='xMinYMin'><circle r='3' cx='3' cy='3' fill='white'></circle></svg> <svg class='bigfoot-footnote__button__circle' viewbox='0 0 6 6' preserveAspectRatio='xMinYMin'><circle r='3' cx='3' cy='3' fill='white'></circle></svg> <svg class='bigfoot-footnote__button__circle' viewbox='0 0 6 6' preserveAspectRatio='xMinYMin'><circle r='3' cx='3' cy='3' fill='white'></circle></svg> </button></div>",
+          popoverAnimationType: "slide", 
+          // Duration for the animation in milliseconds
+          popoverAnimationDuration: 500
       };
       settings = $.extend(defaults, options);
       popoverStates = {};
@@ -464,6 +467,26 @@
         setTimeout(function () {
           return $popoversCreated.addClass("is-active");
         }, settings.popoverCreateDelay);
+
+                // After the popover content is inserted, handle the animation type
+                $popoversCreated.each(function() {
+                  const $popover = $(this);
+                  const animationType = settings.popoverAnimationType;
+                  const duration = settings.popoverAnimationDuration;
+                  // Apply the animation based on the type
+                  switch (animationType) {
+                    case "fade":
+                      $popover.hide().fadeIn(duration);
+                      break;
+                    case "slide":
+                      $popover.hide().slideDown(duration);
+                      break;
+                    default:
+                      // No animation (popover just appears)
+                      $popover.show();
+                      break;
+                  }
+                });
         return $popoversCreated;
       };
       baseFontSize = function () {
@@ -596,6 +619,29 @@
               delete popoverStates[footnoteID];
               return $linkedButton.removeClass("changing");
             }, timeout);
+          }
+        });
+        $(footnotes).each(function() {
+          const $popover = $(this);
+          const animationType = settings.popoverAnimationType;
+          const duration = settings.popoverAnimationDuration;
+      
+          // Apply the animation based on the type before removal
+          switch (animationType) {
+            case "fade":
+              $popover.fadeOut(duration, function() {
+                $popover.remove();
+              });
+              break;
+            case "slide":
+              $popover.slideUp(duration, function() {
+                $popover.remove();
+              });
+              break;
+            default:
+              // No animation (popover just disappears)
+              $popover.remove();
+              break;
           }
         });
         return $buttonsClosed;
