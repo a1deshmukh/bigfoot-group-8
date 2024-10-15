@@ -46,16 +46,14 @@ Based on our analysis, while implementing Bigfoot.js in a webpage is not overly 
 
 
 # Demo of Animation Change 
-![](demo/animation-demo.mov)
+[animation](https://drive.google.com/file/d/1W3CMRGlBGTPG7RTnxEW6xnNNn2Jd5XPx/view?usp=sharing)
 
 For code used in this demo, please refer to the animation branch.
 
 # Demo of Sound Change 
-<video width="320" height="240" controls>
-  <source src="demo/sound-demo.mp4" type="video/mp4">
-</video>\
+[sound](https://drive.google.com/file/d/1PR72m0pJHO1kZrCTWbt3qe-r-PPUqKIE/view?usp=sharing)
 
 # Demo of Bigfoot Different Footnote Types 
-<video width="320" height="240" controls>
-  <source src="demo/bigfoot-footnote-types.mp4" type="video/mp4">
-</video>
+[footnote types](https://drive.google.com/file/d/1RXvnomykPKQOJBXGmtmVV0R_M4raOQDp/view?usp=sharing)
+
+
