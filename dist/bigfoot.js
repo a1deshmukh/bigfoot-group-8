@@ -35,8 +35,12 @@
       bigfoot = void 0;
       let userInteracted = false;
       // click or touchstart event to flag user interaction
-      document.addEventListener('click', () => { userInteracted = true; });
-      document.addEventListener('touchstart', () => { userInteracted = true; });
+      document.addEventListener("click", () => {
+        userInteracted = true;
+      });
+      document.addEventListener("touchstart", () => {
+        userInteracted = true;
+      });
       defaults = {
         actionOriginalFN: "hide",
         activateCallback: function () {},
@@ -153,10 +157,10 @@
       // Function to play sound
       function playSound(soundFile) {
         if (userInteracted) {
-            var audio = new Audio(soundFile);
-            audio.play().catch(error => {
-                console.error("Error playing sound:", error);
-            });
+          var audio = new Audio(soundFile);
+          audio.play().catch((error) => {
+            console.error("Error playing sound:", error);
+          });
         }
       }
       const sanitizeFootnoteContent = (content, backlinkRef) => {
@@ -330,7 +334,7 @@
       buttonHover = function (event) {
         var $buttonHovered, dataIdentifier, otherPopoverSelector;
         // play hover sound
-        playSound('sounds/hover.mp3');
+        playSound("sounds/hover.mp3");
         if (settings.activateOnHover) {
           $buttonHovered = $(event.target).closest(".bigfoot-footnote__button");
           dataIdentifier =
@@ -370,7 +374,7 @@
         var dataIdentifier;
         $button.blur();
         // play click sound
-        playSound('sounds/click.mp3');
+        playSound("sounds/click.mp3");
         dataIdentifier =
           "data-footnote-identifier='" +
           $button.attr("data-footnote-identifier") +
@@ -685,13 +689,13 @@
                 $this.find(".bigfoot-footnote__content").outerWidth() + 1
               );
               $mainWrap.css("max-width", maxWidth + "px");
-              /*$this.css({
+              $this.css({
                 left:
                   -roomLeft.leftRelative * maxWidth +
                   parseFloat($button.css("margin-left")) +
                   $button.outerWidth() / 2 +
                   "px",
-              });*/
+              });
               positionTooltip($this, roomLeft.leftRelative);
             }
             if (
