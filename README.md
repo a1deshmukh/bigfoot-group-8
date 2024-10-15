@@ -46,9 +46,7 @@ Based on our analysis, while implementing Bigfoot.js in a webpage is not overly 
 
 
 # Demo of Animation Change 
-<video width="320" height="240" controls>
-  <source src="demo/animation-demo.mov" type="video/mp4">
-</video>
+![](demo/animation-demo.mov)
 
 For code used in this demo, please refer to the animation branch.
 
