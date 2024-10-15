@@ -1,21 +1,62 @@
-# bigfoot.js
+# Bigfoot.js Code Review
 
-by [Chris Sauve](http://cmsauve.com/projects)
+# Repository Analysis
 
-Bigfoot is a jQuery plugin that creates exceptional footnotes. Simply include the code on your pages and footnotes will be detected automatically and improved in the following ways:
+## Architecture and Design Decisions
 
-- Links to footnotes will be replaced with clickable/ tappable buttons, making them substantially easier to hit.
+- Architecture: Bigfoot.js is implemented as a jQuery plugin, with functionality primarily written in CoffeeScript and SCSS files.
+- Design Philosophy: The plugin enhances footnotes by converting them into interactive popovers, improving accessibility for users.
 
-- Footnote content will appear in a popover directly beside the footnote button when it is clicked/ tapped, which cuts out the annoying bouncing around the page that footnotes typically result in.
+## Code Organization and Quality
 
-- The active popovers will be resized and repositioned to ensure that they continue to be completely visible on-screen and aesthetically pleasing: this makes it perfect for mobile devices and responsive designs.
+- Documentation: The code features detailed comments and annotations, contributing to good readability and maintainability.
+- Language Choice: The use of CoffeeScript, while less popular today, may pose challenges for developers attempting to contribute to or maintain the repository. Most CoffeeScript functionality is now available in modern JavaScript, potentially eliminating the need for CoffeeScript.
+- Framework Dependency: The project relies on jQuery, which may be considered outdated given the trend towards modern JavaScript frameworks. While it works with jQuery 3.0 and above, this could potentially cause issues with more advanced browsers or other web frameworks.
+- Code Structure:
+    - Variable declarations in bigfoot.js do not utilize 'let' or 'const' to differentiate between mutable and immutable variables.
+    - Presence of nested if loops increases code complexity. Consider using logical AND operators in if conditions to simplify.
+    - Frequent use of for loops may impact time complexity. Consider alternative approaches where possible.
+    - Numeric constants (e.g., 10,000) are used repeatedly. Assigning these to named constants (e.g., MAX_WIDTH) would improve code readability.
+    - The footnoteInit function is overly large and should be modularized.
+    - Several similar functions exist in bigfoot.js, suggesting potential for refactoring.
+- Flexibility: Implementing an Options object would allow for greater code flexibility.
 
-This project includes both the script itself and a default style to apply to the footnote button/ content that are eventually generated. There are also a variety of additional styles that illustrate some of the possibilities for styling these components.
+## Repository Organization and Quality
 
-The script has many configurable options from having popovers instantiated on hover, to allowing multiple active footnotes, to setting specific timeouts for popover creation/ deletion. It also returns an object that allows you to activate, remove, add breakpoints, and reposition popovers properly. All of these options and return functions are shown in detail at the script's [project page](http://www.bigfootjs.com/). You can also see a [demo of the project in action](http://www.bigfootjs.com/#demo) on the same page.
+- File Structure: Essential files like README.md, LICENSE.md, changelog.md, and [readme-dev.md](http://readme-dev.md) could be organized into a 'docs' directory for better structure.
+- Documentation: The repository maintains well-maintained essential files (README.md, LICENSE.md, changelog.md) that provide necessary project information. The documentation is thorough, offering detailed explanations of the plugin's functionality and options.
+- Build Tools: The project uses Grunt for task automation. The package.json file is well-defined with necessary dependencies and scripts.
 
-Requires jQuery 1.7+ at a minimum (for `.on()`) and jQuery 1.8+ for full functionality (1.8 automatically prefixes the `transform`/ `transition` properties).
+## Decision
 
-*Note:* Bigfoot is currently incompatible with jQuery 3.0+ (see [#54](https://github.com/lemonmade/bigfoot/issues/54))
+Based on our analysis, while implementing Bigfoot.js in a webpage is not overly complex, several limiting factors need consideration:
 
-Questions? Issues? Feature requests? Check out the [Github page](https://github.com/lemonmade/bigfoot) for this project.
+- The package's code is quite complex, which may be unnecessary for simple footnote functionality.
+- Current web development trends favor frameworks like vanilla JavaScript, React, Vue.js, or TypeScript. The package's use of older jQuery versions and CoffeeScript may pose integration challenges with modern frameworks, potentially causing code conflicts or package failures.
+- While well-documented, the package lacks recent maintenance and updates. This could lead to integration issues with newer technologies.
+    - There are currently 29 active issues in the repository.
+
+## Mitigation Efforts
+
+- Modernize Codebase: Convert the CoffeeScript code to modern JavaScript. This would enhance accessibility for contributors and improve integration possibilities with current frameworks.
+    - Effort: Medium. Requires rewriting main functionality while ensuring core features remain intact.
+- Enhance Browser Compatibility: Test and update the code to ensure compatibility with the latest versions of modern browsers.
+    - Effort: Medium. Involves comprehensive testing and potential minor code adjustments.
+- Improve Code Quality: Implement tools like Prettier with JavaScript to ensure consistent formatting and improved code quality.
+
+
+# Demo of Animation Change 
+<video width="320" height="240" controls>
+  <source src="demo/animation-demo.mov" type="video/mp4">
+</video>
+
+For code used in this demo, please refer to the animation branch.
+
+# Demo of Sound Change 
+<video width="320" height="240" controls>
+  <source src="demo/sound-demo.mp4" type="video/mp4">
+</video>\
+# Demo of Bigfoot Different Footnote Types 
+<video width="320" height="240" controls>
+  <source src="demo/bigfoot-footnote-types.mp4" type="video/mp4">
+</video>
