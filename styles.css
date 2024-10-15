@@ -1,69 +1,34 @@
-/* Reset some basic elements */
-body,
-h1,
-p {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* Button container styling */
+.button-container {
+  text-align: center; /* Center the buttons horizontally */
+  margin: 20px 0; /* Space above and below the buttons */
 }
 
-body {
-  font-family: "Arial", sans-serif;
-  background-color: #f4f4f9;
-  color: #333;
-  margin: 0;
-  padding: 0;
+/* Style for the buttons */
+.style-switcher {
+  background-color: #2980b9; /* Blue background */
+  color: white; /* White text */
+  padding: 10px 20px; /* Add some padding */
+  border: none; /* Remove border */
+  border-radius: 5px; /* Rounded corners */
+  font-size: 1rem; /* Font size */
+  cursor: pointer; /* Pointer on hover */
+  margin: 0 10px; /* Space between buttons */
+  transition: background-color 0.3s ease; /* Smooth background color transition */
 }
 
-/* Page header styling */
-h1 {
-  text-align: center;
-  margin: 30px 0;
-  font-size: 2.5rem;
-  color: #2c3e50;
+/* Hover effect for buttons */
+.style-switcher:hover {
+  background-color: #3498db; /* Lighter blue on hover */
 }
 
-/* Paragraph styling */
-p {
-  line-height: 1.6;
-  font-size: 1.2rem;
-  margin: 20px 15px;
+/* Active button style */
+.style-switcher:active {
+  background-color: #1f618d; /* Darker blue when clicked */
 }
 
-/* Footnotes styling */
-.footnotes {
-  background-color: #f1f1f1;
-  border-top: 2px solid #ccc;
-  padding: 10px 20px;
-}
-
-.footnote {
-  margin-bottom: 15px;
-}
-
-.footnote p {
-  font-size: 0.9rem;
-  color: #666;
-}
-
-/* Links (footnote references) */
-a[rel="footnote"] {
-  color: #2980b9;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-a[rel="footnote"]:hover {
-  text-decoration: underline;
-}
-
-/* Add some responsive design */
-@media (max-width: 768px) {
-  h1 {
-    font-size: 2rem;
-  }
-
-  p {
-    font-size: 1rem;
-  }
+/* Button focus (keyboard navigation) */
+.style-switcher:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Highlight the button on focus */
 }
